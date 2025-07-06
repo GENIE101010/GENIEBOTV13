@@ -1,12 +1,12 @@
 // src/whatsapp/commands.js
-const ocrService = require('../ocr/ocrService');
-const coupeFacile = require('../coupeFacile'); // Importer le module coupeFacile
+const ocr = require('../ocr'); // Importer le module OCR
+const coupeFacile = require('../coupeFacile');
 const { sendMessage } = require('../utils/utils');
 
 const handleCommand = async (message) => {
     if (message.body.startsWith('!score')) {
         const imagePath = message.body.split(' ')[1]; // Exemple d'extraction d'image
-        const result = await ocrService.readScore(imagePath);
+        const result = await ocr.readScoreFromImage(imagePath); // Utiliser la nouvelle fonction
         await sendMessage(message.from, `Score enregistré : ${result.player1} ${result.score} ${result.player2}`);
     } else if (message.body === '!matchs') {
         const screenshot = await coupeFacile.captureMatches();
@@ -33,3 +33,4 @@ const handleCommand = async (message) => {
 };
 
 module.exports = { handleCommand };
+            
